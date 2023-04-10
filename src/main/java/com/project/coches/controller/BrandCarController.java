@@ -37,7 +37,11 @@ public class BrandCarController {
 
     @PostMapping
     public ResponseEntity<BrandCarPojo> save(@RequestBody BrandCarPojo brandCarPojo){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(iBrandCarService.save(brandCarPojo));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(iBrandCarService.save(brandCarPojo));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }
