@@ -1,8 +1,7 @@
 package com.project.coches.domain.service;
 
-import com.project.coches.domain.pojo.BrandCarPojo;
+import com.project.coches.domain.dto.BrandCarDto;
 import com.project.coches.domain.repository.IBrandCarRepository;
-import com.project.coches.persistance.repository.IBrandCarCrudRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class BrandCarService implements IBrandCarService{
      * @return List marca coches pojo
      */
     @Override
-    public List<BrandCarPojo> getAll() {
+    public List<BrandCarDto> getAll() {
         return iBrandCarRepository.getAll();
     }
 
@@ -36,7 +35,7 @@ public class BrandCarService implements IBrandCarService{
      * @return Optional Marca Coche pojo
      */
     @Override
-    public Optional<BrandCarPojo> getBrandCar(Integer id) {
+    public Optional<BrandCarDto> getBrandCar(Integer id) {
         return iBrandCarRepository.getBrandCar(id);
     }
 
@@ -46,10 +45,21 @@ public class BrandCarService implements IBrandCarService{
      * @return Guardado marca coche
      */
     @Override
-    public BrandCarPojo save(BrandCarPojo newBrandCar) {
+    public BrandCarDto save(BrandCarDto newBrandCar) {
         return iBrandCarRepository.save(newBrandCar);
     }
 
+    /**
+     *
+     * @param updateBrandCarDto marca coche a actualizar
+     * @return
+     */
+    public Optional<BrandCarDto> update(BrandCarDto updateBrandCarDto){
+       if(iBrandCarRepository.getBrandCar(updateBrandCarDto.getId()).isEmpty()){
+           return Optional.empty();
+       }
+       return Optional.of(iBrandCarRepository.save(updateBrandCarDto));
+    }
     /**
      * Borra marca coche
      * @param id Id de la marca coche a eliminar
@@ -57,11 +67,10 @@ public class BrandCarService implements IBrandCarService{
      */
     @Override
     public boolean delete(Integer id) {
-        try{
-            iBrandCarRepository.delete(id);
-            return true;
-        }catch (Exception e){
+        if(iBrandCarRepository.getBrandCar(id).isEmpty()){
             return false;
         }
+        iBrandCarRepository.delete(id);
+        return true;
     }
 }
