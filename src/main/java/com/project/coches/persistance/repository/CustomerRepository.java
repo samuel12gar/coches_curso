@@ -2,6 +2,7 @@ package com.project.coches.persistance.repository;
 
 import com.project.coches.domain.dto.CustomerDto;
 import com.project.coches.domain.repository.ICustomerRepository;
+import com.project.coches.persistance.crud.ICustomerCrudRepository;
 import com.project.coches.persistance.entity.CustomerEntity;
 import com.project.coches.persistance.mapper.ICustomerMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class CustomerRepository implements ICustomerRepository {
 
     @Override
     public List<CustomerDto> getAll() {
-        return iCustomerMapper.toCustomersDto(iCustomerCrudRepository.findAll());
+        return iCustomerMapper.
+                toCustomersDto(iCustomerCrudRepository.findAll());
     }
 
     @Override

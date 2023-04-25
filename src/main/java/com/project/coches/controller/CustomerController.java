@@ -1,9 +1,8 @@
 package com.project.coches.controller;
 
-import com.project.coches.domain.dto.BrandCarDto;
 import com.project.coches.domain.dto.CustomerDto;
 import com.project.coches.domain.dto.ResponseCustomerDto;
-import com.project.coches.domain.service.ICustomerService;
+import com.project.coches.domain.usecase.ICustomerUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @RequestMapping(path = "/customers")
 public class CustomerController {
 
-    private final ICustomerService iCustomerService;
+    private final ICustomerUseCase iCustomerUseCase;
 
     /**
      * Devuelve lista de clientes
@@ -25,7 +24,7 @@ public class CustomerController {
      */
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAll(){
-        return ResponseEntity.ok(iCustomerService.getAll());
+        return ResponseEntity.ok(iCustomerUseCase.getAll());
     }
 
     /**
@@ -35,7 +34,7 @@ public class CustomerController {
      */
     @GetMapping(path = "/{cardId}")
     public ResponseEntity<CustomerDto> getCustomerByCardId(@PathVariable String cardId){
-        return ResponseEntity.of(iCustomerService.getCustomerByCardId(cardId));
+        return ResponseEntity.of(iCustomerUseCase.getCustomerByCardId(cardId));
     }
 
     /**
@@ -45,7 +44,7 @@ public class CustomerController {
      */
     @GetMapping(path = "/email/{email}")
     public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email){
-        Optional<CustomerDto> optCustomerDto = iCustomerService.getCustomerByEmail(email);
+        Optional<CustomerDto> optCustomerDto = iCustomerUseCase.getCustomerByEmail(email);
         return ResponseEntity.of(optCustomerDto);
     }
 
@@ -58,7 +57,7 @@ public class CustomerController {
     public ResponseEntity<ResponseCustomerDto> save(@RequestBody CustomerDto customerDto){
        // try {
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(iCustomerService.save(customerDto));
+                    .body(iCustomerUseCase.save(customerDto));
         //} catch (Exception e){
          //   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseCustomerDto(e.getMessage())); //.build();
         //}
@@ -71,7 +70,7 @@ public class CustomerController {
      */
     @PutMapping
     public ResponseEntity<CustomerDto> update(@RequestBody CustomerDto customerDtoUpdate){
-        return ResponseEntity.of(iCustomerService.update(customerDtoUpdate));
+        return ResponseEntity.of(iCustomerUseCase.update(customerDtoUpdate));
     }
 
 
@@ -83,7 +82,7 @@ public class CustomerController {
     @DeleteMapping(path = "/{cardId}")
     public ResponseEntity<Boolean> delete(@PathVariable String cardId){
         return new ResponseEntity<>(
-                this.iCustomerService.delete(cardId)? HttpStatus.OK: HttpStatus.NOT_FOUND
+                this.iCustomerUseCase.delete(cardId)? HttpStatus.OK: HttpStatus.NOT_FOUND
         );
     }
 }

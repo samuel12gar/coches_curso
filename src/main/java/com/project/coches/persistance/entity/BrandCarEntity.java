@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Entidad de la marca coche
  */
@@ -26,6 +28,9 @@ public class BrandCarEntity {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @OneToMany(mappedBy = "brandCarEntity", orphanRemoval = true)
+    private List<CarEntity> carEntities;
+
     public Integer getId() {
         return id;
     }
@@ -40,5 +45,13 @@ public class BrandCarEntity {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public List<CarEntity> getCarEntities() {
+        return carEntities;
+    }
+
+    public void setCarEntities(List<CarEntity> carEntities) {
+        this.carEntities = carEntities;
     }
 }

@@ -3,18 +3,18 @@ package com.project.coches.domain.service;
 import com.project.coches.domain.dto.CustomerDto;
 import com.project.coches.domain.dto.ResponseCustomerDto;
 import com.project.coches.domain.repository.ICustomerRepository;
+import com.project.coches.domain.usecase.ICustomerUseCase;
 import com.project.coches.exception.EmailValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.net.Inet4Address;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class CustomerService implements ICustomerService {
+public class CustomerService implements ICustomerUseCase {
 
     private final ICustomerRepository iCustomerRepository;
 

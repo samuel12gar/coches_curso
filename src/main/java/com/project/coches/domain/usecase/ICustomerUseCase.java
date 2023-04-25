@@ -1,13 +1,12 @@
-package com.project.coches.domain.service;
+package com.project.coches.domain.usecase;
 
-import com.project.coches.domain.dto.BrandCarDto;
 import com.project.coches.domain.dto.CustomerDto;
 import com.project.coches.domain.dto.ResponseCustomerDto;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ICustomerService {
+public interface ICustomerUseCase {
 
     /**
      * Devuelve una lista de los clientes
