@@ -34,6 +34,9 @@ public class CustomerEntity {
     @Column(name = "contrasenia")
     private String password;
 
+    @OneToMany(mappedBy = "customerEntity")
+    private PurchaseEntity purchaseEntity;
+
     public String getCardId() {
         return cardId;
     }
