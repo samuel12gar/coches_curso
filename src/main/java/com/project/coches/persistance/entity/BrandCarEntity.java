@@ -3,7 +3,9 @@ package com.project.coches.persistance.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "marca_coche")
 //@Getter @Setter
-public class BrandCarEntity {
+public class BrandCarEntity implements Serializable {
 
     /**
      *  id de la marca coche
@@ -28,7 +30,8 @@ public class BrandCarEntity {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @OneToMany(mappedBy = "brandCarEntity", orphanRemoval = true)
+    //orphanRemoval = true
+    @OneToMany(mappedBy = "brandCarEntity")
     private List<CarEntity> carEntities;
 
     public Integer getId() {
@@ -53,5 +56,14 @@ public class BrandCarEntity {
 
     public void setCarEntities(List<CarEntity> carEntities) {
         this.carEntities = carEntities;
+    }
+
+    @Override
+    public String toString() {
+        return "BrandCarEntity{" +
+                "id=" + id +
+                ", descripcion='" + descripcion + '\'' +
+                ", carEntities=" + carEntities +
+                '}';
     }
 }

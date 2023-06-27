@@ -4,18 +4,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "coches")
-public class CarEntity {
+public class CarEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_coche")
     private Integer codeCar;
 
     @Column(name = "marca_coche_id")
-    private Integer brandCar;
+    private Integer brandCarId;
 
     @Column(name = "referencia")
     private String reference;
@@ -44,7 +45,7 @@ public class CarEntity {
     private String fuelType;
 
     @Column(name = "cantidad_asientos")
-    private Integer numberSeat;
+    private Integer numberSeats;
 
     @Column(name = "traccion")
     private Integer traction;
@@ -57,6 +58,8 @@ public class CarEntity {
 
     @Column(name = "ruta_imagen")
     private String imagePath;
+
+    private Integer stock;
 
     @ManyToOne
     @JoinColumn(name = "marca_coche_id", insertable = false, updatable = false)
@@ -73,12 +76,12 @@ public class CarEntity {
         this.codeCar = codeCar;
     }
 
-    public Integer getBrandCar() {
-        return brandCar;
+    public Integer getBrandCarId() {
+        return brandCarId;
     }
 
-    public void setBrandCar(Integer brandCar) {
-        this.brandCar = brandCar;
+    public void setBrandCarId(Integer brandCarId) {
+        this.brandCarId = brandCarId;
     }
 
     public String getReference() {
@@ -153,12 +156,12 @@ public class CarEntity {
         this.fuelType = fuelType;
     }
 
-    public Integer getNumberSeat() {
-        return numberSeat;
+    public Integer getNumberSeats() {
+        return numberSeats;
     }
 
-    public void setNumberSeat(Integer numberSeat) {
-        this.numberSeat = numberSeat;
+    public void setNumberSeats(Integer numberSeats) {
+        this.numberSeats = numberSeats;
     }
 
     public Integer getTraction() {
@@ -199,5 +202,46 @@ public class CarEntity {
 
     public void setBrandCarEntity(BrandCarEntity brandCarEntity) {
         this.brandCarEntity = brandCarEntity;
+    }
+
+    public List<CarPurchaseEntity> getCarPurchaseEntity() {
+        return carPurchaseEntity;
+    }
+
+    public void setCarPurchaseEntity(List<CarPurchaseEntity> carPurchaseEntity) {
+        this.carPurchaseEntity = carPurchaseEntity;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    @Override
+    public String toString() {
+        return "CarEntity{" +
+                "codeCar=" + codeCar +
+                //", brandCar=" + brandCar +
+                ", reference='" + reference + '\'' +
+                ", price=" + price +
+                ", modelYear=" + modelYear +
+                ", color='" + color + '\'' +
+                ", horsePower='" + horsePower + '\'' +
+                ", numberDoor=" + numberDoor +
+                ", engineDisplacement=" + engineDisplacement +
+                ", transmission='" + transmission + '\'' +
+                ", fuelType='" + fuelType + '\'' +
+                ", numberSeats=" + numberSeats +
+                ", traction=" + traction +
+                ", steering='" + steering + '\'' +
+                ", category='" + category + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", stock=" + stock +
+                ", brandCarEntity=" + brandCarEntity +
+                ", carPurchaseEntity=" + carPurchaseEntity +
+                '}';
     }
 }

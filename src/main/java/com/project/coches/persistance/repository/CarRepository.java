@@ -29,7 +29,7 @@ public class CarRepository implements ICarRepository {
     @Override
     public List<CarDto> getByIdBrandCar(Integer idBrandCar) {
 
-        return iCarMapper.toCarsDto(iCarCrudRepository.findAllByBrandCar(idBrandCar));
+        return iCarMapper.toCarsDto(iCarCrudRepository.findAllByBrandCarId(idBrandCar));
     }
 
     @Override
@@ -46,7 +46,11 @@ public class CarRepository implements ICarRepository {
     @Override
     public CarDto save(CarDto newCar) {
         CarEntity carEntity = iCarMapper.toCarEntity(newCar);
-        return iCarMapper.toCarDto(iCarCrudRepository.save(carEntity));
+        CarEntity carEntityTmp = iCarCrudRepository.save(carEntity);
+        System.out.println("carEntityTmp: "+carEntityTmp);
+        CarDto carDto = iCarMapper.toCarDto(carEntityTmp);
+        System.out.println("CarDto: "+carDto);
+        return carDto;
     }
 
     @Override

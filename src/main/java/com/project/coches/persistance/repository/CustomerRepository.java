@@ -41,6 +41,7 @@ public class CustomerRepository implements ICustomerRepository {
     @Override
     public CustomerDto save(CustomerDto newCustomer) {
         CustomerEntity customerEntity = iCustomerMapper.toCustomerEntity(newCustomer);
+        System.out.println("CustomerEntity: customerEntity="+customerEntity);
         return iCustomerMapper.toCustomerDto(iCustomerCrudRepository.save(customerEntity));
     }
 

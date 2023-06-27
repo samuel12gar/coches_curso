@@ -48,7 +48,7 @@ public class CarController {
     }
 
     /**
-     * Devuelve cliente dado su mail
+     * Devuelve coche por id coche
      * @param idCar cardId del cliente a buscar
      * @return HttpCode OK si lo encuentra, HttpCode Not found de lo contrario
      */
@@ -59,8 +59,8 @@ public class CarController {
     }
 
     /**
-     * Crea un nuevo cliente
-     * @param carDto cliente a crear
+     * Crea un nuevo coche
+     * @param carDto coche a crear
      * @return HttpCode CREATED si lo crea correctamente, HttpCode Bad Request de lo contrario
      */
     @PostMapping

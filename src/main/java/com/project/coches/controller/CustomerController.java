@@ -24,6 +24,7 @@ public class CustomerController {
      */
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAll(){
+        System.out.println("getAll()");
         return ResponseEntity.ok(iCustomerUseCase.getAll());
     }
 
@@ -34,6 +35,7 @@ public class CustomerController {
      */
     @GetMapping(path = "/{cardId}")
     public ResponseEntity<CustomerDto> getCustomerByCardId(@PathVariable String cardId){
+        System.out.println("Inicio controller customer "+cardId);
         return ResponseEntity.of(iCustomerUseCase.getCustomerByCardId(cardId));
     }
 
@@ -44,23 +46,9 @@ public class CustomerController {
      */
     @GetMapping(path = "/email/{email}")
     public ResponseEntity<CustomerDto> getCustomerByEmail(@PathVariable String email){
+        System.out.println("email: "+email);
         Optional<CustomerDto> optCustomerDto = iCustomerUseCase.getCustomerByEmail(email);
         return ResponseEntity.of(optCustomerDto);
-    }
-
-    /**
-     * Crea un nuevo cliente
-     * @param customerDto cliente a crear
-     * @return HttpCode CREATED si lo crea correctamente, HttpCode Bad Request de lo contrario
-     */
-    @PostMapping
-    public ResponseEntity<ResponseCustomerDto> save(@RequestBody CustomerDto customerDto){
-       // try {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(iCustomerUseCase.save(customerDto));
-        //} catch (Exception e){
-         //   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseCustomerDto(e.getMessage())); //.build();
-        //}
     }
 
     /**

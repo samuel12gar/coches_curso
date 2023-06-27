@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.print.attribute.standard.MediaSize;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Entidad de un cliente
@@ -12,10 +14,9 @@ import javax.print.attribute.standard.MediaSize;
 //@Getter @Setter
 @Entity
 @Table(name = "cliente")
-public class CustomerEntity {
+public class CustomerEntity implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cedula")
     private String cardId;
 
@@ -35,7 +36,10 @@ public class CustomerEntity {
     private String password;
 
     @OneToMany(mappedBy = "customerEntity")
-    private PurchaseEntity purchaseEntity;
+    private List<PurchaseEntity> purchaseEntity;
+
+
+    private String rol;
 
     public String getCardId() {
         return cardId;
@@ -83,5 +87,36 @@ public class CustomerEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<PurchaseEntity> getPurchaseEntity() {
+        return purchaseEntity;
+    }
+
+    public void setPurchaseEntity(List<PurchaseEntity> purchaseEntity) {
+        this.purchaseEntity = purchaseEntity;
+    }
+
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerEntity{" +
+                "cardId='" + cardId + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", numberCellPhone=" + numberCellPhone +
+                ", active=" + active +
+                ", password='" + password + '\'' +
+                ", purchaseEntity=" + purchaseEntity +
+                ", rol='" + rol + '\'' +
+                '}';
     }
 }

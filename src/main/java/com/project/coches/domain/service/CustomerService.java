@@ -4,19 +4,26 @@ import com.project.coches.domain.dto.CustomerDto;
 import com.project.coches.domain.dto.ResponseCustomerDto;
 import com.project.coches.domain.repository.ICustomerRepository;
 import com.project.coches.domain.usecase.ICustomerUseCase;
+import com.project.coches.exception.CustomerExistsException;
+import com.project.coches.exception.CustomerNotExistException;
 import com.project.coches.exception.EmailValidationException;
+import com.project.coches.security.Roles;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
 public class CustomerService implements ICustomerUseCase {
 
     private final ICustomerRepository iCustomerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<CustomerDto> getAll() {
@@ -25,7 +32,10 @@ public class CustomerService implements ICustomerUseCase {
 
     @Override
     public Optional<CustomerDto> getCustomerByCardId(String cardId) {
-        return iCustomerRepository.getCustomerByCardId(cardId);
+        System.out.println(this.getClass()+" "+cardId);
+        Optional<CustomerDto> optCustomer = iCustomerRepository.getCustomerByCardId(cardId);
+        System.out.println(this.getClass()+" "+optCustomer.stream().findFirst());
+        return optCustomer;
     }
 
     @Override
@@ -36,13 +46,24 @@ public class CustomerService implements ICustomerUseCase {
     @Override
     public ResponseCustomerDto save(CustomerDto newCustomer) {
         System.out.println(newCustomer);
-        if(!newCustomer.getEmail().matches("^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@\"\n" +
-                "                        + \"[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$")){
+        //boolean matchEmail = newCustomer.getEmail().matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@\"\n" +
+        //        "                + \"[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$");
+        //System.out.println(matchEmail);
+        Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
+        Matcher matcher = pattern.matcher(newCustomer.getEmail());
+        boolean matchEmail = matcher.matches();
+        if(!matchEmail){
             throw new EmailValidationException();
         }
-        String passwordGenerated = this.generateRandomPassword(8);
-        newCustomer.setPassword(passwordGenerated);
+        if(getCustomerByCardId(newCustomer.getCardId()).isPresent() || getCustomerByEmail(newCustomer.getEmail()).isPresent()){
+            throw new CustomerExistsException();
+        }
+        String passwordGenerated = generateRandomPassword(10);
+        //System.out.println(passwordEncoder.encode(passwordGenerated));
+        newCustomer.setPassword(passwordEncoder.encode(passwordGenerated));
         newCustomer.setActive(1);
+        newCustomer.setRol(Roles.CUSTOMER);
+        System.out.println("Antes de guardar "+newCustomer);
         iCustomerRepository.save(newCustomer);
         ResponseCustomerDto responseCustomerDto = new ResponseCustomerDto(passwordGenerated);
         return responseCustomerDto;
@@ -53,6 +74,12 @@ public class CustomerService implements ICustomerUseCase {
         if(iCustomerRepository.getCustomerByCardId(updateCustomerDto.getCardId()).isEmpty()){
             return Optional.empty();
         }
+        updateCustomerDto.setActive(1);
+        updateCustomerDto.setRol(Roles.CUSTOMER);
+        //System.out.println(passwordEncoder.encode(passwordGenerated));
+        updateCustomerDto.setPassword(passwordEncoder.encode(updateCustomerDto.getPassword()));
+
+        System.out.println(this.getClass()+" "+updateCustomerDto);
         return Optional.of(iCustomerRepository.save(updateCustomerDto));
     }
 

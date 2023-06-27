@@ -9,7 +9,7 @@ import java.util.List;
 public interface ICarCrudRepository extends JpaRepository<CarEntity,Integer> {
 
     //query methods
-    List<CarEntity> findAllByBrandCar(Integer idBrandCarId);
+    List<CarEntity> findAllByBrandCarId(Integer id);
 
     List<CarEntity> findAllByPriceLessThanOrderByPriceDesc(Double price);
 

@@ -3,6 +3,7 @@ package com.project.coches.persistance.entity;
 import com.project.coches.domain.dto.CarPurchaseRequestDto;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "compras")
-public class PurchaseEntity {
+public class PurchaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +37,60 @@ public class PurchaseEntity {
 
     @OneToMany(mappedBy = "purchaseEntity", cascade = CascadeType.ALL )
     private List<CarPurchaseEntity> carsPurchase;
+
+    public Integer getNumberBill() {
+        return numberBill;
+    }
+
+    public void setNumberBill(Integer numberBill) {
+        this.numberBill = numberBill;
+    }
+
+    public String getCardIdCustomer() {
+        return cardIdCustomer;
+    }
+
+    public void setCardIdCustomer(String cardIdCustomer) {
+        this.cardIdCustomer = cardIdCustomer;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public CustomerEntity getCustomerEntity() {
+        return customerEntity;
+    }
+
+    public void setCustomerEntity(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
+    }
+
+    public List<CarPurchaseEntity> getCarsPurchase() {
+        return carsPurchase;
+    }
+
+    public void setCarsPurchase(List<CarPurchaseEntity> carsPurchase) {
+        this.carsPurchase = carsPurchase;
+    }
 }
